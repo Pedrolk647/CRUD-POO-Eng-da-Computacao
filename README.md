@@ -20,9 +20,28 @@ Menu principal em loop até o usuário escolher sair:
 | 4 | Alterar contrato (pesquisa por nome do alvo) |
 | 5 | Remover contrato (pesquisa por nome do alvo) |
 | 6 | Exibir relatório da agência |
-| 7 | Sair |
+| 7 | Sair (salva os dados em arquivo) |
 
 O relatório mostra o total de contratos, o valor total das recompensas somadas às taxas e os detalhes de cada contrato.
+
+### Pesquisa por nome
+
+As opções 3, 4 e 5 usam o mesmo método `Pesquisar(string nome)`, que:
+
+- aceita **nomes com espaço** (a leitura é feita com `getline`);
+- encontra contratos cujo nome do alvo **contém** o texto digitado (não precisa ser o nome completo);
+- se houver **mais de um resultado**, lista os contratos encontrados e pede que o usuário escolha um deles pelo número;
+- retorna `-1` quando nenhum contrato é encontrado.
+
+### Persistência em arquivo
+
+- Ao **iniciar**, o programa carrega automaticamente os contratos de `contratos.txt`.
+- Ao **sair** (opção 7), todos os contratos são salvos nesse mesmo arquivo.
+- As operações (inserir, exibir, alterar, remover) são feitas no vetor em memória, e não diretamente no arquivo.
+- Se o arquivo ainda não existir, o programa avisa e começa vazio. Ele é criado ao sair.
+- Um único arquivo guarda os três tipos de contrato (polimorfismo).
+
+> Evite editar o `contratos.txt` manualmente: o carregamento depende da ordem exata dos campos.
 
 ## Tipos de contrato e taxas
 
@@ -36,20 +55,10 @@ O relatório mostra o total de contratos, o valor total das recompensas somadas 
 
 - **Herança:** `Contrato` (classe abstrata) é a superclasse de `ContratoDiplomatico`, `ContratoEspetacular` e `ContratoFurtivo`.
 - **Composição:** `Contrato` possui dois objetos `Data` (`dataLimite` e `dataConclusao`).
-- **Polimorfismo:** a agência guarda `vector<Contrato*>` e chama `exibirContrato()` (método virtual puro) sem saber o tipo concreto.
+- **Polimorfismo:** a agência guarda `vector<Contrato*>` e chama `exibirContrato()` (método virtual puro) sem saber o tipo concreto. Ao salvar, usa `dynamic_cast` para acessar os atributos de cada subclasse.
 - **Encapsulamento:** atributos privados/protegidos com getters e setters.
-- **Gerenciamento:** a classe `AgenciaMercenarios` concentra as operações CRUD, deixando a `main` só com o menu.
+- **Gerenciamento:** a classe `AgenciaMercenarios` concentra as operações CRUD e a leitura/gravação do arquivo, deixando a `main` só com o menu.
 - **Memória:** os contratos são alocados dinamicamente e liberados no destrutor da agência.
-
-```
-Data
-  ▲ (composição)
-Contrato  «abstract»
-  ├── ContratoDiplomatico
-  ├── ContratoEspetacular
-  └── ContratoFurtivo
-
-```
 
 ## Estrutura de pastas
 
@@ -64,6 +73,7 @@ Contrato  «abstract»
 │   └── Data.h
 ├── src/
 │   └── main.cpp
+├── contratos.txt        (gerado pelo programa ao sair)
 └── README.md
 ```
 
@@ -77,13 +87,18 @@ g++ -std=c++17 -Iinclude src/main.cpp -o apbc
 apbc.exe        # Windows
 ```
 
+Execute o programa sempre a partir da mesma pasta, pois o `contratos.txt` é procurado no diretório atual.
+
 ## Exemplo de uso
 
 ```
+Carregando contratos do arquivo...
+Contratos carregados com sucesso.
 Bem-vindo ao sistema de gerenciamento da APBC (Agência Paraibana de Contratos).
+--------------------------------------------------------------
 Digite a opcao desejada:
  1 - Inserir contrato
- 
+
 >> 1
 >> Digite o tipo de contrato (Diplomatico, Espetacular, Furtivo): Furtivo
 >> Digite o nome do cliente: Maria Silva
@@ -95,10 +110,7 @@ Observações de entrada:
 - O tipo deve ser digitado exatamente como `Diplomatico`, `Espetacular` ou `Furtivo`.
 - Datas no formato `dd/mm/aaaa`.
 - Campos de sim/não usam `1` (sim) e `0` (não).
-
-## Limitações conhecidas
-
-- Entradas inválidas (ex.: letras em campos numéricos) não são tratadas de forma robusta.
+- Na pesquisa, basta digitar parte do nome do alvo (ex.: `Joh` encontra `Johnny Silverhand`).
 
 
 ## Autores
