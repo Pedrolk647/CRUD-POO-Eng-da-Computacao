@@ -1,104 +1,114 @@
-# 🕶️ Sistema CRUD – Agência de Matador de Aluguel (Ficção)
+# APBC – Agência Paraibana de Contratos
 
-Projeto da disciplina **Linguagem de Programação I** (Programação Orientada a Objetos) – Semestre 2026.2
-**Professor:** Derzu Omaia
-**Tema:** Outros (opção 53) – Matador de Aluguel
-**Equipe:** Pedro Luís de Oliveira Lima, Antonio Lucas de Oliveira Silva Belchior Dias Cruz
-**Data de entrega:** 02/11/2026
+Sistema de gerenciamento (CRUD) de uma agência **fictícia** de mercenários, desenvolvido em C++ para o projeto da disciplina **Linguagem de Programação I** (Semestre 2026.2 – Prof. Derzu Omaia).
 
-> ⚠️ **Aviso:** este é um projeto **totalmente fictício e humorístico**, criado apenas para fins didáticos. Todos os nomes, contratos e "alvos" são personagens imaginários. O sistema não possui nenhuma funcionalidade real além do cadastro de dados em memória e em arquivo.
+> Projeto totalmente fictício, feito para fins acadêmicos. Qualquer semelhança com a realidade é coincidência.
 
----
+## Sobre o projeto
 
-## 1. Sobre o projeto
+A APBC cadastra e administra contratos de execução. Cada contrato tem cliente, alvo, local, recompensa, prazo e, se já foi cumprido, data de conclusão. A agência cobra uma **taxa adicional** (percentual sobre a recompensa) que varia conforme o tipo do contrato.
 
-O sistema simula a **gestão de contratos de uma agência fictícia de mercenários**, como as que aparecem em jogos e filmes. Cada contrato registra o cliente, o alvo (um vilão fictício), o local, a recompensa e o status, permitindo cadastrar, consultar, alterar, remover e gerar relatórios, com persistência em arquivo.
+## Funcionalidades
 
-Linguagem: **C++** (padrão C++11 ou superior).
-
----
-
-## 2. Funcionalidades (menu)
+Menu principal em loop até o usuário escolher sair:
 
 | Opção | Descrição |
-|:-----:|-----------|
-| 1 | **Inserir** um novo contrato (escolhendo o tipo: furtivo, espetacular ou diplomático) |
-| 2 | **Listar todos** os contratos |
-| 3 | **Exibir um** contrato (pesquisa por nome do cliente) |
-| 4 | **Alterar** um contrato (pesquisa por nome do cliente) |
-| 5 | **Remover** um contrato (pesquisa por nome do cliente) |
-| 6 | **Exibir relatório** (resumo geral da agência) |
-| 7 | **Sair** |
-| 8 | **Viajar para a lua** 🚀 (missão especial) |
-| H | **Sair** (letra `H` maiúscula encerra o programa e salva os dados) |
+|-------|-----------|
+| 1 | Inserir contrato |
+| 2 | Listar todos os contratos |
+| 3 | Exibir um contrato (pesquisa por nome do alvo) |
+| 4 | Alterar contrato (pesquisa por nome do alvo) |
+| 5 | Remover contrato (pesquisa por nome do alvo) |
+| 6 | Exibir relatório da agência |
+| 7 | Sair |
 
-O programa roda em laço contínuo até o usuário digitar **`H`**.
+O relatório mostra o total de contratos, o valor total das recompensas somadas às taxas e os detalhes de cada contrato.
 
-### Pesquisa por nome
-Um único método reutilizado pelas opções 3, 4 e 5:
+## Tipos de contrato e taxas
 
-```cpp
-int Pesquisar(std::string nome);
-```
+| Tipo | Atributos próprios | Regra da taxa |
+|------|--------------------|---------------|
+| **Diplomático** | cargo do alvo, organização envolvida | 50% fixa |
+| **Espetacular** | público estimado, divulgação na mídia | 10% base; +20% se público > 10.000; +10% se houver divulgação na mídia |
+| **Furtivo** | tempo limite (min), nível de segurança (1–10) | 5% base; +10% se tempo < 60; +15% se nível > 5 |
 
-- Aceita o nome completo **ou apenas o início** do nome, inclusive com espaços.
-- Se mais de um contrato corresponder, todos são exibidos com seus índices e o usuário escolhe pelo índice.
+## Modelagem (POO)
 
-### Relatório
-- quantidade total de contratos cadastrados;
-- quantidade por tipo de contrato;
-- valor total e média das recompensas;
-- quantidade de **Girafas** e **Vacas Loucas** armazenadas.
-
----
-
-## 3. Persistência em arquivo
-
-- Dados **carregados automaticamente** ao abrir o programa e **salvos ao finalizar**.
-- Todas as operações ocorrem na **fila em memória**, nunca direto no arquivo.
-- Um **único arquivo** (`dados.txt`) guarda objetos de todas as classes.
-- Cada linha começa com **`Vaca`** e termina com **`Girafa`**.
-
-Exemplo (campos separados por `;`):
+- **Herança:** `Contrato` (classe abstrata) é a superclasse de `ContratoDiplomatico`, `ContratoEspetacular` e `ContratoFurtivo`.
+- **Composição:** `Contrato` possui dois objetos `Data` (`dataLimite` e `dataConclusao`).
+- **Polimorfismo:** a agência guarda `vector<Contrato*>` e chama `exibirContrato()` (método virtual puro) sem saber o tipo concreto.
+- **Encapsulamento:** atributos privados/protegidos com getters e setters.
+- **Gerenciamento:** a classe `AgenciaMercenarios` concentra as operações CRUD, deixando a `main` só com o menu.
+- **Memória:** os contratos são alocados dinamicamente e liberados no destrutor da agência.
 
 ```
-Vaca;FURTIVO;Barao Imaginario;Vilao Mascarado;5000.00;90000;Cobertura Ficticia;Gotham City;3;12;1;Girafa
-Vaca;ESPETACULAR;Dona Fantasia;Doutor Maligno;8000.00;75000;Fabrica Abandonada;Cidade Neon;5;9;1;Girafa
-Vaca;DIPLOMATICO;Sr. Ficticio;Chefe da Mafia de Mentira;3000.00;100000;Restaurante Italiano;Vila Pixel;Mediador Joao;1;Girafa
+Data
+  ▲ (composição)
+Contrato  «abstract»
+  ├── ContratoDiplomatico
+  ├── ContratoEspetacular
+  └── ContratoFurtivo
+
+AgenciaMercenarios ◇── 0..* Contrato
 ```
 
----
-
-## 5. Estrutura de arquivos
+## Estrutura de pastas
 
 ```
-AgenciaMercenarios/
-**Ainda a declarar**
+.
+├── include/
+│   ├── AgenciaMercenarios.h
+│   ├── Contrato.h
+│   ├── ContratoDiplomatico.h
+│   ├── ContratoEspetacular.h
+│   ├── ContratoFurtivo.h
+│   └── Data.h
+├── src/
+│   └── main.cpp
+└── README.md
 ```
 
----
+## Como compilar e executar
 
-## 6. Como compilar e executar
+Requer um compilador com suporte a C++11 ou superior (g++, clang++ ou MSVC).
 
 ```bash
-g++ -std=c++11 main.cpp -o agencia
-./agencia            # Linux/macOS
-agencia.exe          # Windows
+g++ -std=c++17 -Iinclude src/main.cpp -o apbc
+./apbc          # Linux/macOS
+apbc.exe        # Windows
 ```
 
----
+## Exemplo de uso
 
-## 7. Uso de Inteligência Artificial
+```
+Bem-vindo ao sistema de gerenciamento da APBC (Agência Paraibana de Contratos).
+Digite a opcao desejada:
+ 1 - Inserir contrato
+ ...
+1
+Digite o tipo de contrato (Diplomatico, Espetacular, Furtivo): Furtivo
+Digite o nome do cliente: Maria Silva
+Digite o nome do alvo: Joao
+Digite a recompensa: 1000
+...
+```
 
-> Conforme exigido na especificação, indicar onde a IA foi utilizada.
+Observações de entrada:
+- O tipo deve ser digitado exatamente como `Diplomatico`, `Espetacular` ou `Furtivo`.
+- Datas no formato `dd/mm/aaaa`.
+- Campos de sim/não usam `1` (sim) e `0` (não).
+
+## Limitações conhecidas
+
+- A pesquisa (opções 3, 4 e 5) exige o **nome exato** do alvo e, como usa `cin >>`, não aceita nomes com espaço.
+- Não há persistência: os dados são perdidos ao sair do programa.
+- Entradas inválidas (ex.: letras em campos numéricos) não são tratadas de forma robusta.
 
 
+## Autores
 
----
+- Belchior Dias Cruz
+- Pedro Luís de Oliveira Lima
+- Antônio Lucas de Oliveira Silva
 
-## 8. Autores
-
-|Pedro Luís de Oliveira Lima|
-|Antônio Lucas de Oliveira Silva|
-|Belchior Dias Cruz|
-
+**Disciplina:** Linguagem de Programação I – 2026.2 · **Professor:** Derzu Omaia
