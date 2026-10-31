@@ -6,18 +6,29 @@
       "type": "shell",
       "command": "g++",
       "args": [
-        "-std=c++11",
-        "-g",
-        "-Iinclude",
-        "src/*.cpp",
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "-I${workspaceFolder}/include",
+        "${workspaceFolder}/src/main.cpp",
         "-o",
-        "app"
+        "${workspaceFolder}/main"
       ],
       "group": {
         "kind": "build",
         "isDefault": true
       },
-      "problemMatcher": ["$gcc"]
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+    {
+      "label": "Executar projeto",
+      "type": "shell",
+      "command": "${workspaceFolder}/main",
+      "dependsOn": "Compilar projeto C++",
+      "dependsOrder": "sequence",
+      "problemMatcher": []
     }
   ]
 }
