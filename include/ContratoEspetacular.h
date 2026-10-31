@@ -5,7 +5,7 @@
 
 class ContratoEspetacular : public Contrato
 {
-protected:
+private:
     int publicoEstimado;
     bool divulgacaoMidia;
 
@@ -33,12 +33,20 @@ public:
         cout << "Local: " << this->getlocal() << ", " << this->cidade;
         cout << "Publico estimado: " << this->publicoEstimado << ";" << endl;
         cout << "Divulgacao na midia: " << (this->divulgacaoMidia ? "Sim" : "Nao") << ";" << endl;
-        cout << "Tipo de contrato: " << this->tipo << ", Alvo: " << this->getNomeAlvo() << ";" << endl;
+        cout << "Tipo de contrato: " << this->tipo << ";" << endl;
         cout << "Cliente: " << this->getnomeCliente() << ";" << endl;
         cout << "Data limite: " << this->dataLimite.getDia() << ", " << this->dataLimite.getMesString() << ", " << this->dataLimite.getAno() << ";" << endl;
         if (this->desfecho)
             cout << "Data de conclusão: " << this->dataConclusao.getDia() << ", " << this->dataConclusao.getMesString() << ", " << this->dataConclusao.getAno() << ";" << endl;
         cout << "Taxa adicional da agência: " << this->getTaxa() << ";" << endl;
         cout << "Recompensa do executor: " << this->getrecompensa() << ";" << endl;
+    }
+    int getPublicoEstimado()
+    {
+        return this->publicoEstimado;
+    }
+    bool getDivulgacaoMidia()
+    {
+        return this->divulgacaoMidia;
     }
 };

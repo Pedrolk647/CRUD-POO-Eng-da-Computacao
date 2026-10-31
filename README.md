@@ -49,7 +49,6 @@ Contrato  «abstract»
   ├── ContratoEspetacular
   └── ContratoFurtivo
 
-AgenciaMercenarios ◇── 0..* Contrato
 ```
 
 ## Estrutura de pastas
@@ -84,13 +83,12 @@ apbc.exe        # Windows
 Bem-vindo ao sistema de gerenciamento da APBC (Agência Paraibana de Contratos).
 Digite a opcao desejada:
  1 - Inserir contrato
- ...
-1
-Digite o tipo de contrato (Diplomatico, Espetacular, Furtivo): Furtivo
-Digite o nome do cliente: Maria Silva
-Digite o nome do alvo: Joao
-Digite a recompensa: 1000
-...
+ 
+>> 1
+>> Digite o tipo de contrato (Diplomatico, Espetacular, Furtivo): Furtivo
+>> Digite o nome do cliente: Maria Silva
+>> Digite o nome do alvo: Joao
+>> Digite a recompensa: 1000
 ```
 
 Observações de entrada:
@@ -100,8 +98,6 @@ Observações de entrada:
 
 ## Limitações conhecidas
 
-- A pesquisa (opções 3, 4 e 5) exige o **nome exato** do alvo e, como usa `cin >>`, não aceita nomes com espaço.
-- Não há persistência: os dados são perdidos ao sair do programa.
 - Entradas inválidas (ex.: letras em campos numéricos) não são tratadas de forma robusta.
 
 

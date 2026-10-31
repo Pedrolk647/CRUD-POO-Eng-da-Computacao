@@ -7,7 +7,7 @@ using namespace std;
 
 class ContratoFurtivo : public Contrato
 {
-protected:
+private:
     int tempoLimite, nivelSeguranca;
 
 public:
@@ -41,11 +41,19 @@ public:
         cout << "Local: " << this->getlocal() << ", " << this->cidade << endl;
         cout << "Tempo limite: " << this->tempoLimite << ";" << endl;
         cout << "Nivel de segurança: " << this->nivelSeguranca << ";" << endl;
-        cout << "Tipo de contrato: " << this->tipo << ", Alvo: " << this->getNomeAlvo() << ";" << endl;
+        cout << "Tipo de contrato: " << this->tipo << ";" << endl;
         cout << "Data limite: " << this->dataLimite.getDia() << ", " << this->dataLimite.getMesString() << ", " << this->dataLimite.getAno() << ";" << endl;
         if (this->desfecho)
             cout << "Data de conclusão: " << this->dataConclusao.getDia() << ", " << this->dataConclusao.getMesString() << ", " << this->dataConclusao.getAno() << ";" << endl;
         cout << "Taxa adicional da agência: " << this->getTaxa() << ";" << endl;
         cout << "Recompensa do executor: " << this->getrecompensa() << ";" << endl;
+    }
+    int getTempoLimite()
+    {
+        return this->tempoLimite;
+    }
+    int getNivelSeguranca()
+    {
+        return this->nivelSeguranca;
     }
 };

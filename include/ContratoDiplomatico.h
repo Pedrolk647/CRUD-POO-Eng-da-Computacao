@@ -7,7 +7,7 @@ using namespace std;
 
 class ContratoDiplomatico : public Contrato
 {
-protected:
+private:
     string cargo, organizacaoEnvolvida;
 
 public:
@@ -24,12 +24,20 @@ public:
         cout << "Local: " << this->getlocal() << ", " << this->cidade << endl;
         cout << "Cargo do alvo: " << this->cargo << endl;
         cout << "Organização envolvida: " << this->organizacaoEnvolvida << endl;
-        cout << "Tipo de contrato: " << this->tipo << ", Alvo: " << this->getNomeAlvo() << ";" << endl;
+        cout << "Tipo de contrato: " << this->tipo << ";" << endl;
         cout << "Cliente: " << this->getnomeCliente() << ";" << endl;
         cout << "Data limite: " << this->dataLimite.getDia() << ", " << this->dataLimite.getMesString() << ", " << this->dataLimite.getAno() << ";" << endl;
         if (this->desfecho)
             cout << "Data de conclusão: " << this->dataConclusao.getDia() << ", " << this->dataConclusao.getMesString() << ", " << this->dataConclusao.getAno() << ";" << endl;
         cout << "Taxa adicional da agência: " << this->getTaxa() << ";" << endl;
         cout << "Recompensa do executor: " << this->getrecompensa() << ";" << endl;
+    }
+    string getCargo()
+    {
+        return this->cargo;
+    }
+    string getOrganizacaoEnvolvida()
+    {
+        return this->organizacaoEnvolvida;
     }
 };

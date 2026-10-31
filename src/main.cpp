@@ -10,11 +10,16 @@ int main()
 {
     AgenciaMercenarios agencia("APBC");
     int n;
+    agencia.carregarArquivo();
+
     cout << "Bem-vindo ao sistema de gerenciamento da APBC (Agência Paraibana de Contratos)." << endl;
+
     do
     {
+        cout << "--------------------------------------------------------------" << endl;
         cout << "Digite a opcao desejada: " << endl;
         cout << " 1 - Inserir contrato \n 2 - Listar todos os contratos \n 3 - Exibir um contrato (pesquisar por nome do alvo) \n 4 - Alterar contrato (pesquisar por nome do alvo) \n 5 - Remover contrato(pesquisar por nome do alvo) \n 6 - Exibir Relatório da Agência \n 7 - Sair" << endl;
+        cout << ">> ";
         cin >> n;
         switch (n)
         {
@@ -31,7 +36,8 @@ int main()
         {
             string nomeAlvo;
             cout << "Digite o nome do alvo do contrato que deseja exibir: ";
-            cin >> nomeAlvo;
+            cin.ignore();
+            getline(cin, nomeAlvo);
             int index = agencia.exibirContratos(nomeAlvo);
             if (index == -1)
             {
@@ -43,7 +49,8 @@ int main()
         {
             string nomeAlvoAlterar;
             cout << "Digite o nome do alvo do contrato que deseja alterar: ";
-            cin >> nomeAlvoAlterar;
+            cin.ignore();
+            getline(cin, nomeAlvoAlterar);
             Contrato *novoContrato = agencia.criarContrato();
             agencia.alterarContrato(nomeAlvoAlterar, novoContrato);
             break;
@@ -51,8 +58,9 @@ int main()
         case 5:
         {
             string nomeAlvoRemover;
-            cout << "Digite o nome ou index do alvo do contrato que deseja remover: ";
-            cin >> nomeAlvoRemover;
+            cout << "Digite o nome ou índice do alvo do contrato que deseja remover: ";
+            cin.ignore();
+            getline(cin, nomeAlvoRemover);
             agencia.removerContrato(nomeAlvoRemover);
             break;
         }
@@ -68,7 +76,8 @@ int main()
             break;
         }
 
+        cout << "--------------------------------------------------------------" << endl;
     } while (n != 7);
-
+    agencia.salvarArquivo();
     return 0;
 }

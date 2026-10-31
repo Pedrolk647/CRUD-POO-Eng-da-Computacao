@@ -51,7 +51,28 @@ public:
 
         return this->local;
     }
+    string getCidade()
+    {
 
+        return this->cidade;
+    }
+    Data getDataLimite()
+    {
+        return this->dataLimite;
+    }
+    Data getDataConclusao()
+    {
+        return this->dataConclusao;
+    }
+    string getTipo()
+    {
+        return this->tipo;
+    }
+    bool getDesfecho()
+    {
+
+        return this->desfecho;
+    }
     float getrecompensa()
     {
 
